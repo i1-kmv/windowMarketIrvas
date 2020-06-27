@@ -2,9 +2,8 @@ const forms = () => {
     const form = document.querySelectorAll('form'),
           inputs = document.querySelectorAll('input'),
           phoneInputs = document.querySelectorAll('input[name="user_phone"]');
-    
-    // проверяем ввод 
-    phoneInputs.forEach( item => {
+
+    phoneInputs.forEach(item => {
         item.addEventListener('input', () => {
             item.value = item.value.replace(/\D/, '');
         });
@@ -12,18 +11,12 @@ const forms = () => {
     
     const message = {
         loading: 'Загрузка...',
-        success: 'Спасибо! Скоро с Вами свяжемя',
+        success: 'Спасибо! Скоро мы с вами свяжемся',
         failure: 'Что-то пошло не так...'
     };
 
-    const clearInputs = () => {
-        inputs.forEach( item => {
-            item.value = '';
-        });
-    };
-
     const postData = async (url, data) => {
-        document.querySelector('.status'.textContent = message.loading);
+        document.querySelector('.status').textContent = message.loading;
         let res = await fetch(url, {
             method: "POST",
             body: data
@@ -32,7 +25,13 @@ const forms = () => {
         return await res.text();
     };
 
-    form.forEach( item => {
+    const clearInputs = () => {
+        inputs.forEach(item => {
+            item.value = '';
+        });
+    };
+
+    form.forEach(item => {
         item.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -47,16 +46,15 @@ const forms = () => {
                     console.log(res);
                     statusMessage.textContent = message.success;
                 })
-                .catch(() => statusMessage.textContent = message.failure).finally( () => {
+                .catch(() => statusMessage.textContent = message.failure)
+                .finally(() => {
                     clearInputs();
-                    setTimeout( () => {
+                    setTimeout(() => {
                         statusMessage.remove();
-                    }, 50000);
+                    }, 5000);
                 });
-
         });
     });
-
 };
 
 export default forms;
